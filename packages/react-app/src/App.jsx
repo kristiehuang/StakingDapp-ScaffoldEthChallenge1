@@ -50,7 +50,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -512,7 +512,7 @@ function App(props) {
             {completeDisplay}
 
             <div style={{ padding: 8, marginTop: 32 }}>
-              <div>Timeleft:</div>
+              <div>Time left to stake:</div>
               {timeLeft && humanizeDuration(timeLeft.toNumber() * 1000)}
             </div>
 
@@ -528,12 +528,27 @@ function App(props) {
 
             <div style={{ padding: 8 }}>
               <Button
+                type={balanceStaked ? "success" : "primary"}
+                onClick={() => {
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.01") }));
+                }}
+              >
+                🥩 Stake 0.01 ether!
+              </Button>
+            </div>
+
+            <div style={{ padding: 8 }}>
+              <div>If staking time has ended:</div>
+            </div>
+
+            <div style={{ padding: 8 }}>
+              <Button
                 type={"default"}
                 onClick={() => {
                   tx(writeContracts.Staker.execute());
                 }}
               >
-                📡 Execute!
+                📡  Execute!
               </Button>
             </div>
 
@@ -548,16 +563,6 @@ function App(props) {
               </Button>
             </div>
 
-            <div style={{ padding: 8 }}>
-              <Button
-                type={balanceStaked ? "success" : "primary"}
-                onClick={() => {
-                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.5") }));
-                }}
-              >
-                🥩 Stake 0.5 ether!
-              </Button>
-            </div>
 
             {/*
                 🎛 this scaffolding is full of commonly used components
@@ -571,9 +576,9 @@ function App(props) {
                 dataSource={stakeEvents}
                 renderItem={item => {
                   return (
-                    <List.Item key={item[0] + item[1] + item.blockNumber}>
-                      <Address value={item[0]} ensProvider={mainnetProvider} fontSize={16} /> =>
-                      <Balance balance={item[1]} />
+                    <List.Item key={item.transactionHash}>
+                      <Address value={item.args[0]} ensProvider={mainnetProvider} fontSize={16} /> =>
+                      <Balance balance={item.args[1]} />
                     </List.Item>
                   );
                 }}
@@ -632,7 +637,7 @@ function App(props) {
 
       <div style={{ marginTop: 32, opacity: 0.5 }}>
         {/* Add your address here */}
-        Created by <Address value={"Your...address"} ensProvider={mainnetProvider} fontSize={16} />
+        Created by kristiehuang.eth
       </div>
 
       <div style={{ marginTop: 32, opacity: 0.5 }}>

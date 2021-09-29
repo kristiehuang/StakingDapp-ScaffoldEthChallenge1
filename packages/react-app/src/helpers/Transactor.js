@@ -117,6 +117,7 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
 
         return result;
       } catch (e) {
+        
         if (DEBUG) console.log(e);
         // Accounts for Metamask and default signer on all networks
         let message =
