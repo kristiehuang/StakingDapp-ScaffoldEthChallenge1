@@ -1,4 +1,4 @@
-pragma solidity >=0.6.0 <0.7.0;
+pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 import "./ExampleExternalContract.sol"; //https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
@@ -11,24 +11,24 @@ contract Staker {
   bool public openForWithdraw = false;
   uint256 public deadline = 0;
 
-  event Stake (
-    address staker,
+  event Stake(
+    address indexed staker,
     uint256 balance
   );
 
 
   constructor(address exampleExternalContractAddress) public {
     exampleExternalContract = ExampleExternalContract(exampleExternalContractAddress);
-    deadline = now + 1 days;
+    deadline = block.timestamp + 1 days;
   }
 
   modifier beforeDeadline() {
-    require(now < deadline, "Must go before the deadline");
+    require(block.timestamp < deadline, "Must go before the deadline");
     _;
   }
 
   modifier atOrAfterDeadline() {
-    require(now >= deadline, "Wait longer! The deadline hasn't been reached yet.");
+    require(block.timestamp >= deadline, "Wait longer! The deadline hasn't been reached yet.");
     _;
   }
 
@@ -59,12 +59,11 @@ contract Staker {
 
 
   // if the `threshold` was not met, allow everyone to call a `withdraw()` function
-  // Message sender withdraws all of their funds to an address that does not have to be msg.sender.
-  function withdraw(address payable _to) public notCompleted {
+  // Message sender withdraws all of their funds to themselves.
+  function withdraw() public notCompleted {
     require(openForWithdraw, "Contract is not yet open for withdrawal.");
     require(balances[msg.sender] > 0, "You have no balance.");
-    // We do not require that msg.sender == _to address.
-    (bool sent, bytes memory data) = _to.call{value: balances[msg.sender]}("");
+    (bool sent, bytes memory data) = msg.sender.call{value: balances[msg.sender]}("");
     require(sent, "Failed to send Ether");
   }
 
@@ -72,10 +71,10 @@ contract Staker {
   // Add a `timeLeft()` view function that returns the time left before the deadline for the frontend
   function timeLeft() public view returns (uint256) {
     // Time left only updates once a new block is mined; now == block.timestamp
-    if (now >= deadline) {
+    if (block.timestamp >= deadline) {
       return 0;
     }
-    return deadline - now;
+    return deadline - block.timestamp;
   }
 
 }
