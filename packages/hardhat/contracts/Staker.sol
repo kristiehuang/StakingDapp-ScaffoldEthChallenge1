@@ -7,7 +7,7 @@ contract Staker {
 
   ExampleExternalContract public exampleExternalContract;
   mapping (address => uint256) public balances;
-  uint256 public constant threshold = 0.01 ether;
+  uint256 public constant threshold = 0.05 ether;
   bool public openForWithdraw = false;
   uint256 public deadline = 0;
 
@@ -19,7 +19,7 @@ contract Staker {
 
   constructor(address exampleExternalContractAddress) public {
     exampleExternalContract = ExampleExternalContract(exampleExternalContractAddress);
-    deadline = now + 100 seconds;
+    deadline = now + 1 days;
   }
 
   modifier beforeDeadline() {
