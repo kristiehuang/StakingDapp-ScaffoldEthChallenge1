@@ -1,11 +1,11 @@
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
 // Forked and cloned just the Challenge 1 branch from [scaffold-eth](https://github.com/scaffold-eth/scaffold-eth/tree/challenge-1-decentralized-staking):
-  * git clone <old-url> --branch <branch-name> --single-branch [<folder>]
-  * cd [<folder>]
+  * git clone [old-url] --branch [branch-name] --single-branch [folder]
+  * cd [folder]
   * git push https://github.com/accountname/new-repo.git +branch-name:main
   * git remote remove origin
-  * git remote add origin <new-repo-url>
+  * git remote add origin [new-repo-url]
   * git checkout -b main
 
 ## 🚩 Challenge 1: Decentralized Staking App
