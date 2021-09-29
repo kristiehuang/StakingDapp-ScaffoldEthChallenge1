@@ -1,5 +1,11 @@
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
+// Forked and cloned just the Challenge 1 branch from [scaffold-eth](https://github.com/scaffold-eth/scaffold-eth/tree/challenge-1-decentralized-staking):
+  git clone <old-url> --branch <branch-name> --single-branch [<folder>]
+  git push https://github.com/accountname/new-repo.git +branch-name:main
+  git remote remove origin
+  git remote add origin <new-repo-url>
+
 ## 🚩 Challenge 1: Decentralized Staking App
 
 > 🏦 Build a `Staker.sol` contract that collects **ETH** from numerous addresses using a payable `stake()` function and keeps track of `balances`. After some `deadline` if it has at least some `threshold` of ETH, it sends it to an `ExampleExternalContract` and triggers the `complete()` action sending the full balance. If not enough **ETH** is collected, allow users to `withdraw()`.
